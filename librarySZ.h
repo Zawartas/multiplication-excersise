@@ -10,14 +10,14 @@ using namespace std;
 
 class pair_of_numbers {
 public:
-    int x;
-    int y;
+    unsigned int x;
+    unsigned int y;
 };
 
 bool getNumber (int &);
 int random_number (int);
 void make_set_of_questions (pair_of_numbers *, int, int);
-void question (int, int, bool &, bool &, bool &);
+void question (int, pair_of_numbers *, bool &, bool &, bool &);
 void wait (int, bool &, bool &, bool &);
 
 #endif // librarySZ_h
