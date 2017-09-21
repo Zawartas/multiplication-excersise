@@ -1,6 +1,6 @@
 #include "librarySZ.h"
 
-int _max, _loop, _time, _a;
+int _max, _loop, _time;
 double _winCount = 0;
 
 bool getNumber (int &x)
@@ -17,43 +17,18 @@ int random_number (int to)
     return rand()%to + 1;
 }
 
-void make_table_of_questions (int *_questions, int table_size, int max_value)
-{
-    for (int *i = _questions; i != _questions + table_size; i++)
-    {
-        bool values_not_repeated = true;
-        do
-        {
-            *i = rand()%max_value + 1;
-            for (int *j = _questions; j != i; j++)
-            {
-                if (*j == *i)
-                {
-                    values_not_repeated = false;
-                    break;
-                }
-                else
-                    values_not_repeated = true;
-            }
-        }
-        while(!values_not_repeated);
-    }
-
-}
-
 void make_set_of_questions (pair_of_numbers *pair, int table_size, int max_value)
 {
-    for (pair_of_numbers *i = pair; i < pair + table_size; i++){
-
+    for (pair_of_numbers *ptr = pair; ptr < pair + table_size; ptr++){
         bool values_not_repeated = true;
-
         do
         {
-            (pair->x) = rand()%max_value + 1;
-            (pair->y) = rand()%max_value + 1;
-            for (pair_of_numbers *j = pair; j != i; j++)
+            (ptr->x) = rand()%max_value + 1;
+            (ptr->y) = rand()%max_value + 1;
+
+            for (pair_of_numbers *j = pair; j != ptr; j++)
             {
-                if (j->x == i->x && j->y == i->y)
+                if (j->x == ptr->x && j->y == ptr->y)
                 {
                     values_not_repeated = false;
                     break;
@@ -66,23 +41,22 @@ void make_set_of_questions (pair_of_numbers *pair, int table_size, int max_value
     }
 }
 
-void question (int x,  int _a, bool &_timeOut, bool &_calcDone, bool &_threadOneFinished)
+void question (int setSize,  pair_of_numbers *ptr, bool &_timeOut, bool &_calcDone, bool &_threadOneFinished)
 {
-    srand(time(nullptr));
-
-    int _c, _b = random_number(x);
     _calcDone = false;
     _threadOneFinished = false;
 
+    int _c;
+
     do
     {
-        cout << _a << " x " << _b << " = ";
+        cout << (ptr + setSize)->x << " x " << (ptr + setSize)->y << " = ";
     }
     while (getNumber(_c) == false);
 
     _threadOneFinished = true;
 
-    _calcDone = ((_a * _b == _c) ? true : false);
+    _calcDone = (((ptr + setSize)->x * (ptr + setSize)->y == _c) ? true : false);
 
     if (_timeOut == false && _calcDone == true)
         _winCount += 1;
